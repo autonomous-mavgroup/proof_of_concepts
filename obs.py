@@ -18,8 +18,6 @@ cv2.createTrackbar('u_M','image',255,255,nothing)
 cv2.createTrackbar('v_m','image',0,255,nothing)
 cv2.createTrackbar('v_M','image',255,255,nothing)
 
-
-
 #rotate all images
 for image in images:
     # grab the dimensions of the image and calculate the center
@@ -35,12 +33,22 @@ for image in images:
     lower = np.array([cv2.getTrackbarPos('y_m','image'),cv2.getTrackbarPos('v_m','image'),cv2.getTrackbarPos('u_m','image')])
     upper = np.array([cv2.getTrackbarPos('y_M','image'),cv2.getTrackbarPos('v_M','image'),cv2.getTrackbarPos('u_M','image')])
     
+    #hard coded for testing purposes
+    lower = np.array([70,70,70])
+    upper = np.array([110,110,110])
+    
+    #masking and residual image
     mask = cv2.inRange(image, lower, upper)
+
+    #inverting image
+    mask = 255-mask
     res = cv2.bitwise_and(image,image, mask= mask)
 
-    cv2.imshow("image",res)
-    cv2.waitKey(1)
+    #median filtering
+    mask = cv2.medianBlur(mask,5)
+
+    cv2.imshow("image",mask)
+    cv2.waitKey(1000)
     #cv2.destroyAllWindows()
-    sleep(1)
     
 
