@@ -20,14 +20,8 @@ cv2.createTrackbar('v_M','image',255,255,nothing)
 
 #rotate all images
 for image in images:
-    # grab the dimensions of the image and calculate the center
-    # of the image
-    (h, w) = image.shape[:2]
-    center = (w / 2, h / 2)
-    
-    # rotate the image by 90 degrees
-    M = cv2.getRotationMatrix2D(center, 90, 1.0)
-    image = cv2.warpAffine(image, M, (w, h))
+    # rotate image
+    image = np.rot90(image)
 
     #create mask and colour filter
     lower = np.array([cv2.getTrackbarPos('y_m','image'),cv2.getTrackbarPos('v_m','image'),cv2.getTrackbarPos('u_m','image')])
