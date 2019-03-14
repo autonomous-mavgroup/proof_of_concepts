@@ -1,3 +1,5 @@
+import math
+
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
@@ -7,19 +9,19 @@ image = cv2.imread("pics/77978111.jpg")
 image = np.rot90(image)
 # convert to RGB
 imageRGB = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-plt.imshow(imageRGB)
-plt.show()
 # convert to HSV
 image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-plt.imshow(image)
-plt.show()
-lower_green = np.array([25, 0, 0])
-upper_green = np.array([110, 255, 255])
+
+lower_green = np.array([0, 0, 0])
+upper_green = np.array([120, 140, 255])
 mask = cv2.inRange(image, lower_green, upper_green)
-result = cv2.bitwise_and(imageRGB, imageRGB, mask=mask)
+result = cv2.bitwise_and(image, image, mask=mask)
 # average it out/ remove noise
-result = cv2.medianBlur(result, 3)
-plt.imshow(result)
-# TODO: closing seems not to work
-plt.show(block=False)
-plt.close('close')
+result = cv2.medianBlur(result, 21)
+
+edges = cv2.Canny(result, 300, 400)
+
+
+cv2.imshow("mask", edges)
+cv2.imshow("result", result)
+cv2.waitKey(0)
