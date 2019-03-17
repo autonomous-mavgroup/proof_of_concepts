@@ -16,7 +16,7 @@ class Point:
 
 results = np.zeros((len(images),2))
 im_number =0
-plotting=True
+plotting=False
 for image in images:
     image = np.rot90(image)
     while(True):
