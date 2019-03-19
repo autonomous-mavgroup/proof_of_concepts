@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
-image = cv2.imread("pics/77978111.jpg")
+image = cv2.imread("pic/91777999.jpg")
 # rotate image
 image = np.rot90(image)
 # convert to RGB
