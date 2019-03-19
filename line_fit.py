@@ -16,13 +16,14 @@ class Point:
 
 results = np.zeros((len(images),2))
 im_number =0
-plotting=False
+plotting=True
 for image in images:
     image = np.rot90(image)
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
     while(True):
         #create mask and colour filter
-        lower = np.array([63,70,74])
-        upper = np.array([99,108,111])
+        lower = np.array([0,2,70])
+        upper = np.array([181,52,111])
         t0 = time.time()
         #lower = np.array([57,70,75])
         #upper = np.array([105,93,104])
@@ -108,7 +109,7 @@ for image in images:
                 plt.subplot(121)
                 plt.imshow(edges)
                 plt.subplot(122)
-                plt.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+                plt.imshow(cv2.cvtColor(image, cv2.COLOR_HSV2RGB))
                 plt.plot(x_arr,y_arr)
 
                 # figManager = plt.get_current_fig_manager() 

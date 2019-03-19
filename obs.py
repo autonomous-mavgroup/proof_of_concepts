@@ -12,27 +12,27 @@ def nothing(x):
 #create window
 cv2.namedWindow('image', cv2.WINDOW_NORMAL)
 cv2.namedWindow('real', cv2.WINDOW_NORMAL)
+
 # cv2.setWindowProperty("image",cv2.WND_PROP_FULLSCREEN,cv2.WINDOW_FULLSCREEN)
 
 #create trackbar for window
-cv2.createTrackbar('y_m','image',74,255,nothing)
-cv2.createTrackbar('y_M','image',103,255,nothing)
-cv2.createTrackbar('u_m','image',62,255,nothing)
-cv2.createTrackbar('u_M','image',92,255,nothing)
-cv2.createTrackbar('v_m','image',69,255,nothing)
-cv2.createTrackbar('v_M','image',86,255,nothing)
+cv2.createTrackbar('y_m','image',0,255,nothing)
+cv2.createTrackbar('y_M','image',181,255,nothing)
+cv2.createTrackbar('u_m','image',2,255,nothing)
+cv2.createTrackbar('u_M','image',52,255,nothing)
+cv2.createTrackbar('v_m','image',70,255,nothing)
+cv2.createTrackbar('v_M','image',111,255,nothing)
 
 #rotate all images
 
 for image in images:
     image = np.rot90(image)
 
-
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
     while(True):
         #create mask and colour filter
-        lower = np.array([cv2.getTrackbarPos('y_m','image'),cv2.getTrackbarPos('v_m','image'),cv2.getTrackbarPos('u_m','image')])
-        upper = np.array([cv2.getTrackbarPos('y_M','image'),cv2.getTrackbarPos('v_M','image'),cv2.getTrackbarPos('u_M','image')])
-
+        lower = np.array([cv2.getTrackbarPos('y_m','image'),cv2.getTrackbarPos('u_m','image'),cv2.getTrackbarPos('v_m','image')])
+        upper = np.array([cv2.getTrackbarPos('y_M','image'),cv2.getTrackbarPos('u_M','image'),cv2.getTrackbarPos('v_M','image')])
         #hard coded for testing purposes
         # lower = np.array([70,70,70])
         # upper = np.array([110,110,110])
@@ -41,7 +41,6 @@ for image in images:
         mask = cv2.inRange(image, lower, upper)
 
         #inverting image
-        mask = 255-mask
         res = cv2.bitwise_and(image, image, mask= mask)
 
         #median filtering
