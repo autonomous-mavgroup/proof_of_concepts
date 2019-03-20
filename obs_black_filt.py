@@ -21,7 +21,15 @@ def filt_black(img, b_thresh=220):
     return filt_img
 
 
-def find_white(filt_arr, grid_size=(7,10)):
+def find_white(filt_arr, grid_size=(7, 10)):
+    """
+    Sub-samples a 2D array into a rougher 2D array containing the sum of the values
+    corresponding to the patch of the original array considered
+
+    :param filt_arr: 2D array of 1s and 0s
+    :param grid_size: shape of outputted 2D array
+    :return: 2D array
+    """
     y, x = filt_arr.shape
     y_step = y // grid_size[0]
     x_step = x // grid_size[1]
@@ -29,24 +37,24 @@ def find_white(filt_arr, grid_size=(7,10)):
 
     for j in range(grid_size[1]):
         for i in range(grid_size[0]):
-            print(i, j, '\t', i*y_step, (i+1)*y_step, '\t', j*x_step, (j+1)*x_step, '\t', np.sum(filt_arr[i*y_step:(i+1)*y_step, j*x_step:(j+1)*x_step]))
             grid[i, j] = np.sum(filt_arr[i*y_step:(i+1)*y_step, j*x_step:(j+1)*x_step])
 
     return grid
+
 
 for image in os.listdir('.//pics'):
     img = cv2.imread('.//pics//' + image)
     img = np.rot90(img)
 
     filt_img = filt_black(img, b_thresh=225)
-    white_sum = find_white(filt_img)
+    white_sum = find_white(filt_img, grid_size=(13, 18))
 
     cv2.imshow('image', img)
     cv2.imshow('filt_img', filt_img)
     cv2.waitKey(0)
 
     plt.figure()
-    plt.imshow(white_sum, cmap='hot')
+    plt.imshow(white_sum, cmap='gnuplot2')
     plt.draw()
     plt.waitforbuttonpress(0)
     plt.close()
