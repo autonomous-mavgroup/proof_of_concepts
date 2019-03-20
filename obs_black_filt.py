@@ -1,6 +1,7 @@
 import os
 import cv2
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 def filt_black(img, b_thresh=220):
@@ -20,14 +21,33 @@ def filt_black(img, b_thresh=220):
     return filt_img
 
 
+def find_white(filt_arr, grid_size=(7,10)):
+    y, x = filt_arr.shape
+    y_step = y // grid_size[0]
+    x_step = x // grid_size[1]
+    grid = np.empty(grid_size)
+
+    for j in range(grid_size[1]):
+        for i in range(grid_size[0]):
+            print(i, j, '\t', i*y_step, (i+1)*y_step, '\t', j*x_step, (j+1)*x_step, '\t', np.sum(filt_arr[i*y_step:(i+1)*y_step, j*x_step:(j+1)*x_step]))
+            grid[i, j] = np.sum(filt_arr[i*y_step:(i+1)*y_step, j*x_step:(j+1)*x_step])
+
+    return grid
+
 for image in os.listdir('.//pics'):
     img = cv2.imread('.//pics//' + image)
     img = np.rot90(img)
 
-    filt_img = filt_black(img)
+    filt_img = filt_black(img, b_thresh=225)
+    white_sum = find_white(filt_img)
 
     cv2.imshow('image', img)
     cv2.imshow('filt_img', filt_img)
     cv2.waitKey(0)
 
+    plt.figure()
+    plt.imshow(white_sum, cmap='hot')
+    plt.draw()
+    plt.waitforbuttonpress(0)
+    plt.close()
 
