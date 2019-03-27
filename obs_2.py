@@ -37,7 +37,7 @@ sub_samp = False
 for image in images:
     image = np.rot90(image)
 
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV) 
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
     found_points = False
 
     while(True):
@@ -50,9 +50,6 @@ for image in images:
 
         #masking and residual image
         mask = cv2.inRange(image, lower, upper)
-
-        # inverting image
-        res = cv2.bitwise_and(image, image, mask= mask)  # not needed?
 
         #median filtering
         mask = cv2.medianBlur(mask,5)
@@ -80,8 +77,6 @@ for image in images:
                 for step in range(height-1):
                         if (edges[(height-1-step),i]>0 ):
                                 up_green_test = np.count_nonzero(np.array([mask[(height-1-step)-1,i],mask[(height-1-step)-2,i],mask[(height-1-step)-3,i],mask[(height-1-step)-4,i]] ))
-                                # try:
-                                #         side_green_test = np.count_nonzero( np.array( [mask[(height-1-step),i-1],mask[(height-1-step)-2,i-2],mask[(height-1-step)-3,i+1],mask[(height-1-step)-4,i+2]] ))
                                 if (up_green_test==0):
                                         edge_lines.append([(height-1-step),i])
                                         found_points = True

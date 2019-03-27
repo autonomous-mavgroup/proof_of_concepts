@@ -66,13 +66,14 @@ def ransac_inl(points,coefficients,threshold):
 #     return inliers
 
 def diff(points):
-    #returns array of the form (x,y,y''  )
+    # Returns array of the form (x,y,y')
     res = np.zeros(((len(points)-1),3))
-    for i in range(len(points)-1):             #compute y'
-        res[i,2] = abs(points[i+1][0] -points[i][0])/(points[i+1][1]-points[i][1])
-        res[i,0] = points[i][1]
-        res[i,1] = points[i][0]
-    for i in range(len(points)-2):             #compute y''
+    for i in range(len(points)-1):
+        res[i, 0] = points[i][1]  # x
+        res[i, 1] = points[i][0]  # y
+        res[i, 2] = abs(points[i+1][0] -points[i][0])/(points[i+1][1]-points[i][1])   # Compute y' (slope, dy/dx)
+
+    for i in range(len(points)-2):             # Compute y''
         res[i,2] = abs(res[i+1,2]-res[i,2])
     return res[0:len(points)-2,:]
-    #return res
+    # Return res
